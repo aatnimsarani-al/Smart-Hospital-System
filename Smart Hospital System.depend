@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1789665738 source:d:\smart hospital system\hospital.c
+	"hospital.h"
+
+1789665738 d:\smart hospital system\hospital.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1789665738 source:d:\smart hospital system\main.c
+	"hospital.h"
+

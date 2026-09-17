@@ -1,0 +1,7 @@
+===============================================
+ID: PAT-1001 | Name: Thisuri Nimsarani | Age: 21 | Urgency: 1
+Specialty: General Practice (OPD)
+Ward: General Ward (Bed #01) | Days: 2
+Gross Total: LKR 7500.00 | Discount: LKR 0.00 | Final Bill: LKR 7500.00
+===============================================
+
