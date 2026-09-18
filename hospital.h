@@ -13,6 +13,11 @@
 // --- FUNCTION PROTOTYPES ---
 void loadBedsFromFile(void);
 void saveBedsToFile(void);
+/**
+ * @brief Logs the formatted billing summary of a registered patient to a file.
+ * @param index The array position index of the target patient.
+ */
+void logPatientRecord(int index);
 void logPatientRecord(int index);
 
 int findPatientIndexByID(const char* id);
