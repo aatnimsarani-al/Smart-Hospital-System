@@ -30,9 +30,9 @@ int main(void) {
             case 4:
                 generateAnalyticsReport();
                 break;
-            case 5:
+           case 5:
                 saveBedsToFile();
-                printf("\nBed status successfully saved to bed_status.txt.\nExiting System. Goodbye!\n");
+                printf("\nBed status matrix saved successfully to bed_status.txt.\nExiting system...\n");
                 break;
            
             default:
