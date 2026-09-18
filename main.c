@@ -8,7 +8,7 @@ int main(void) {
     // ... rest of menu loop
     do {
         printf("\n======================================================\n");
-        printf("    SMART HOSPITAL & RESOURCE ALLOCATION SYSTEM      \n");
+        printf("     SMART HOSPITAL & RESOURCE ALLOCATION SYSTEM      \n");
         printf("======================================================\n");
         printf("1. Register Patient & Process Bill\n");
         printf("2. Display Bed Occupancy Matrix\n");
