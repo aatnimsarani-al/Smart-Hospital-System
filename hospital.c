@@ -29,7 +29,7 @@ int specialtyQueueCounts[NUM_SPECIALTIES] = {0, 0, 0, 0};
 const char* SPECIALTY_NAMES[NUM_SPECIALTIES] = {
     "General Practice (OPD)", "Paediatrics", "Cardiology", "Neurology"
 };
-const float BASE_FEES[NUM_SPECIALTIES] = {1500.00, 2500.00, 4500.00, 5000.00};
+const float BASE_FEES[NUM_SPECIALTIES] = {1500.00, 2500.00, 4500.00, 5500.00};
 const int AVG_TIMES[NUM_SPECIALTIES] = {15, 20, 30, 30};
 const int DAILY_CAPS[NUM_SPECIALTIES] = {30, 20, 12, 10};
 
