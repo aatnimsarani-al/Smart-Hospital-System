@@ -34,8 +34,10 @@ int main(void) {
                 saveBedsToFile();
                 printf("\nBed status successfully saved to bed_status.txt.\nExiting System. Goodbye!\n");
                 break;
+           
             default:
-                printf("\nInvalid selection! Please enter a number from 1 to 5.\n");
+                printf("\n[ERROR] Invalid option selected! Please enter a choice between 1 and 5.\n");
+                break;
         }
     } while (choice != 5);
 
