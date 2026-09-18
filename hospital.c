@@ -1,19 +1,19 @@
 #include "hospital.h"
 
-// --- Global Data Arrays (Parallel Arrays Approach) ---
+
 int patientCount = 0;
 
 char patientID[MAX_PATIENTS][15];
 char patientName[MAX_PATIENTS][50];
 int patientAge[MAX_PATIENTS];
-int patientUrgency[MAX_PATIENTS]; // 1 = Normal, 2 = Urgent, 3 = Critical
-int patientSpecialty[MAX_PATIENTS]; // 1 to 4
-int patientAdmitted[MAX_PATIENTS]; // 1 = Yes, 0 = No
-int patientWard[MAX_PATIENTS]; // 1 to 4
+int patientUrgency[MAX_PATIENTS]; 
+int patientSpecialty[MAX_PATIENTS];
+int patientAdmitted[MAX_PATIENTS];
+int patientWard[MAX_PATIENTS]; 
 int patientDays[MAX_PATIENTS];
 int patientBedNo[MAX_PATIENTS];
 
-// Cost & Calculations Parallel Arrays
+
 float patientBaseFee[MAX_PATIENTS];
 float patientSurcharge[MAX_PATIENTS];
 float patientWardCost[MAX_PATIENTS];
@@ -22,10 +22,10 @@ float patientDiscount[MAX_PATIENTS];
 float patientFinalBill[MAX_PATIENTS];
 float patientWaitTime[MAX_PATIENTS];
 
-// Specialty Queues (Track total registered per specialty)
+
 int specialtyQueueCounts[NUM_SPECIALTIES] = {0, 0, 0, 0};
 
-// --- Lookup Data ---
+
 const char* SPECIALTY_NAMES[NUM_SPECIALTIES] = {
     "General Practice (OPD)", "Paediatrics", "Cardiology", "Neurology"
 };
@@ -39,10 +39,9 @@ const char* WARD_NAMES[NUM_WARDS] = {
 const float WARD_RATES[NUM_WARDS] = {3000.00, 6000.00, 12000.00, 25000.00};
 const int WARD_CAPACITIES[NUM_WARDS] = {20, 10, 10, 5};
 
-// Bed Occupancy Matrix: [Ward Index 0-3][Bed Index 0-19] (0 = Available, 1 = Occupied)
+
 int bedOccupancy[NUM_WARDS][20] = {0};
 
-// --- File Handling Functions ---
 
 void loadBedsFromFile(void) {
     FILE *file = fopen("bed_status.txt", "r");
@@ -96,7 +95,6 @@ void logPatientRecord(int index) {
     fclose(file);
 }
 
-// --- Functional Modules ---
 
 void registerPatient(void) {
     if (patientCount >= MAX_PATIENTS) {
@@ -109,11 +107,11 @@ void registerPatient(void) {
 
     printf("\n--- NEW PATIENT REGISTRATION [%s] ---\n", patientID[i]);
 
-    // 1. Patient Details Input
+   
     printf("Enter Patient Name: ");
-    getchar(); // Clear leftover newline
+    getchar();
     fgets(patientName[i], sizeof(patientName[i]), stdin);
-    patientName[i][strcspn(patientName[i], "\n")] = 0; // Remove trailing newline
+    patientName[i][strcspn(patientName[i], "\n")] = 0; 
 
     printf("Enter Patient Age: ");
     scanf("%d", &patientAge[i]);
@@ -123,7 +121,7 @@ void registerPatient(void) {
         scanf("%d", &patientUrgency[i]);
     } while (patientUrgency[i] < 1 || patientUrgency[i] > 3);
 
-    // 2. Specialty Selection
+   
     printf("\nAvailable Specialties:\n");
     for (int s = 0; s < NUM_SPECIALTIES; s++) {
         printf("  %d. %-25s (Fee: LKR %.2f, Daily Cap: %d)\n",
@@ -137,16 +135,16 @@ void registerPatient(void) {
 
     int specIdx = patientSpecialty[i] - 1;
 
-    // Check daily capacity limit
+   
     if (specialtyQueueCounts[specIdx] >= DAILY_CAPS[specIdx]) {
         printf("Warning: Daily patient capacity reached for %s!\n", SPECIALTY_NAMES[specIdx]);
     }
 
-    // 3. Waiting Time Calculation
+    
     patientWaitTime[i] = specialtyQueueCounts[specIdx] * AVG_TIMES[specIdx];
     specialtyQueueCounts[specIdx]++; // Increment queue count
 
-    // 4. Ward Admission Details & Bed Allocation
+  
     printf("\nIs patient admitted to ward? (1 = Yes, 0 = No): ");
     scanf("%d", &patientAdmitted[i]);
 
@@ -166,14 +164,14 @@ void registerPatient(void) {
         printf("Enter Days Admitted: ");
         scanf("%d", &patientDays[i]);
 
-        // Find available bed in selected ward
+       
         int wardIdx = patientWard[i] - 1;
         int bedAssigned = 0;
 
         for (int b = 0; b < WARD_CAPACITIES[wardIdx]; b++) {
             if (bedOccupancy[wardIdx][b] == 0) {
-                bedOccupancy[wardIdx][b] = 1; // Mark occupied
-                patientBedNo[i] = b + 1;      // Bed numbers are 1-indexed
+                bedOccupancy[wardIdx][b] = 1; 
+                patientBedNo[i] = b + 1;     
                 bedAssigned = 1;
                 break;
             }
@@ -187,10 +185,10 @@ void registerPatient(void) {
         patientDays[i] = 0;
     }
 
-    // 5. Billing Calculations
+   
     patientBaseFee[i] = BASE_FEES[specIdx];
 
-    // Emergency Surcharge Calculation
+    
     if (patientUrgency[i] == 2) {
         patientSurcharge[i] = patientBaseFee[i] * 0.20f;
     } else if (patientUrgency[i] == 3) {
@@ -199,27 +197,27 @@ void registerPatient(void) {
         patientSurcharge[i] = 0.0f;
     }
 
-    // Ward Stay Cost Calculation
+   
     if (patientAdmitted[i] == 1 && patientWard[i] > 0) {
         patientWardCost[i] = patientDays[i] * WARD_RATES[patientWard[i] - 1];
     } else {
         patientWardCost[i] = 0.0f;
     }
 
-    // Gross Total Bill
+   
     patientGrossTotal[i] = patientBaseFee[i] + patientSurcharge[i] + patientWardCost[i];
 
-    // Age Subsidy Discount (15% for Age < 5 or Age > 65)
+    
     if (patientAge[i] < 5 || patientAge[i] > 65) {
         patientDiscount[i] = patientGrossTotal[i] * 0.15f;
     } else {
         patientDiscount[i] = 0.0f;
     }
 
-    // Final Payable Amount
+    
     patientFinalBill[i] = patientGrossTotal[i] - patientDiscount[i];
 
-    // 6. Output Receipt
+   
     printf("\n======================================================\n");
     printf("           SMART HOSPITAL ADMISSION & BILL           \n");
     printf("======================================================\n");
@@ -253,7 +251,7 @@ void registerPatient(void) {
     }
     printf("======================================================\n");
 
-    // Save persistent log record
+   
     logPatientRecord(i);
     patientCount++;
 }
@@ -284,13 +282,13 @@ void displayPriorityQueue(void) {
         return;
     }
 
-    // Create array of indices for non-destructive sorting
+  
     int indices[MAX_PATIENTS];
     for (int i = 0; i < patientCount; i++) {
         indices[i] = i;
     }
 
-    // Selection Sort based on Urgency (Desc), then Registration Order (Asc)
+    
     for (int i = 0; i < patientCount - 1; i++) {
         int maxIdx = i;
         for (int j = i + 1; j < patientCount; j++) {
@@ -335,16 +333,16 @@ void generateAnalyticsReport(void) {
     float maxBill = -1.0f;
 
     for (int i = 0; i < patientCount; i++) {
-        // Urgency Counts
+       
         if (patientUrgency[i] == 1) countNormal++;
         else if (patientUrgency[i] == 2) countUrgent++;
         else if (patientUrgency[i] == 3) countCritical++;
 
-        // Financial Totals
+        
         totalRevenue += patientFinalBill[i];
         totalDiscounts += patientDiscount[i];
 
-        // Track Highest Paying Patient
+       
         if (patientFinalBill[i] > maxBill) {
             maxBill = patientFinalBill[i];
             highestIndex = i;
