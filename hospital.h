@@ -10,6 +10,11 @@
 #define NUM_SPECIALTIES 4
 #define NUM_WARDS 4
 
+// --- STATUS & ERROR CODES ---
+#define SUCCESS 0
+#define ERROR_FULL_CAPACITY -1
+#define ERROR_FILE_NOT_FOUND -2
+
 // --- FUNCTION PROTOTYPES ---
 void loadBedsFromFile(void);
 void saveBedsToFile(void);
