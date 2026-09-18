@@ -15,6 +15,9 @@ void loadBedsFromFile(void);
 void saveBedsToFile(void);
 void logPatientRecord(int index);
 
+int findPatientIndexByID(const char* id);
+void searchPatientRecord(void);
+
 void registerPatient(void);
 void displayBedMatrix(void);
 void displayPriorityQueue(void);
