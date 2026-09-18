@@ -5,11 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+// --- CONSTANTS & MACROS ---
 #define MAX_PATIENTS 100
 #define NUM_SPECIALTIES 4
 #define NUM_WARDS 4
 
-// Function Declarations
+// --- FUNCTION PROTOTYPES ---
 void loadBedsFromFile(void);
 void saveBedsToFile(void);
 void logPatientRecord(int index);
