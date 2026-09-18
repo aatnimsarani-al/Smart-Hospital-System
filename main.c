@@ -1,9 +1,11 @@
 #include "hospital.h"
 
 int main(void) {
-    loadBedsFromFile(); // Load saved bed occupancy data
+    // Restore persistent bed occupancy states on startup
+    loadBedsFromFile(); 
 
     int choice;
+    // ... rest of menu loop
     do {
         printf("\n======================================================\n");
         printf("    SMART HOSPITAL & RESOURCE ALLOCATION SYSTEM      \n");
